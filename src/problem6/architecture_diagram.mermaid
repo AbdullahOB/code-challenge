@@ -1,0 +1,118 @@
+graph TB
+    subgraph "Client Layer"
+        A[Web Browser] 
+        B[Mobile App]
+        C[Game Client]
+    end
+    
+    subgraph "CDN & Load Balancing"
+        D[CDN - Cloudflare]
+        E[Load Balancer - Nginx]
+        A --> D
+        B --> D  
+        C --> D
+        D --> E
+    end
+    
+    subgraph "API Gateway"
+        F[API Gateway - Express.js]
+        G[Rate Limiter - Redis]
+        H[Auth Middleware]
+        E --> F
+        F --> G
+        F --> H
+    end
+    
+    subgraph "Microservices"
+        I[Score Service]
+        J[Auth Service] 
+        K[Fraud Detection Service]
+        L[WebSocket Manager]
+        H --> I
+        H --> J
+        I --> K
+        I --> L
+    end
+    
+    subgraph "Message Queue"
+        M[Redis Pub/Sub]
+        N[Score Update Events]
+        O[Fraud Alert Events]
+        I --> M
+        K --> M
+        M --> N
+        M --> O
+    end
+    
+    subgraph "Database Cluster"
+        P[(PostgreSQL Primary)]
+        Q[(PostgreSQL Replica 1)]
+        R[(PostgreSQL Replica 2)]
+        I --> P
+        I --> Q
+        P --> Q
+        P --> R
+    end
+    
+    subgraph "Cache Layer"
+        S[(Redis Cluster)]
+        T[Leaderboard Cache]
+        U[Session Cache]
+        V[Rate Limit Cache]
+        I --> S
+        S --> T
+        J --> U
+        G --> V
+    end
+    
+    subgraph "Real-time Communication"
+        W[WebSocket Pool]
+        X[Connection Manager]
+        Y[Message Broadcaster]
+        L --> W
+        L --> X
+        M --> Y
+        Y --> W
+    end
+    
+    subgraph "Monitoring & Observability"
+        Z[Prometheus Metrics]
+        AA[Grafana Dashboard]
+        BB[ELK Stack Logging]
+        CC[Alertmanager]
+        Z --> AA
+        Z --> CC
+        I --> Z
+        K --> Z
+        L --> BB
+    end
+    
+    subgraph "Security Layer"
+        DD[WAF - Web Application Firewall]
+        EE[DDoS Protection]
+        FF[SSL/TLS Termination]
+        D --> DD
+        DD --> EE
+        EE --> FF
+        FF --> E
+    end
+    
+    subgraph "External Services"
+        GG[JWT Key Server]
+        HH[Fraud ML Service]
+        II[Notification Service]
+        J --> GG
+        K --> HH
+        O --> II
+    end
+    
+    style P fill:#4CAF50
+    style Q fill:#81C784
+    style R fill:#81C784
+    style S fill:#FF9800
+    style T fill:#FFB74D
+    style U fill:#FFB74D
+    style V fill:#FFB74D
+    style W fill:#2196F3
+    style X fill:#64B5F6
+    style Y fill:#64B5F6
